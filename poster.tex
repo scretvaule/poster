@@ -49,7 +49,7 @@
 % Title
 % ====================
 
-\title{\textcolor{black}{\fontsize{60}{70}\selectfont\textbf{\sys}: Accelerating Dynamic Adapter Inference via\\Token-Level Pre-Gating and Fused Kernel Optimization}}
+\title{\textcolor{black}{\fontsize{40}{50}\selectfont\textbf{\sys}: Accelerating Dynamic Adapter Inference via\\Token-Level Pre-Gating and Fused Kernel Optimization}}
 
 
 \author{\textcolor{black}{Qiyang Li${}^{1}$, Rui Kong${}^{1}$, Yuchen Li${}^{1}$, Hengyi Cai${}^{1}$, Shuaiqiang Wang${}^{1}$, Linghe Kong${}^{2}$, Guihai Chen${}^{2}$, Dawei Yin${}^{1}$}}
@@ -66,53 +66,41 @@
     % \href{mailto:yuchenli1230@gmail.com}{yuchenli1230@gmail.com}
   }
 }
-\logoright{\includegraphics[height=12cm]{logos/baidu.png}}
+\logoright{\includegraphics[height=8cm]{logos/baidu.png}}
 \logoleft{%
-    \begin{minipage}[c]{10cm}
+    \begin{minipage}[c]{8cm}
         \centering
-        \includegraphics[height=8cm]{logos/sjtu.png}
+        \includegraphics[height=6cm]{logos/sjtu.png}
     \end{minipage}
 }
 \begin{document}
 
 \begin{frame}[t]
 
-% Intro Block
 \begin{columns}[t]
 \separatorcolumn
-\begin{column}{\dimexpr2\colwidth+\sepwidth}
-    \begin{exampleblock}{\textcolor{black}{Motivation \& Contributions}}
-        \textbf{Problem \& Motivation:}
-        \begin{itemize}
-            \item Integrating dynamic sparse structures (MoE) with parameter-efficient adapters (e.g., LoRA) enhances LLMs but suffers from severe inference latency (decoding slows by $>$2.5$\times$).
-            \item The bottleneck lies in fragmented, sequential CUDA kernel launches required for conventional dynamic routing (layer-wise or block-wise), not computation itself.
-        \end{itemize}
-        \vspace{1ex}
-        \textbf{Our Key Contributions:}
-        \begin{itemize}
-            \item \textbf{Token-Level Pre-Gating:} We propose \textbf{\sys}, which employs a ``decide-once, apply-everywhere'' strategy. A single router at the first layer determines expert activation for all subsequent layers, eliminating repeated routing overhead.
-            \item \textbf{Fused Adapter Switching (SGMM):} We develop a custom CUDA kernel (SGMM) that merges parameters of all selected LoRA adapters into the backbone in a single efficient pass, replacing multiple kernel calls.
-            \item \textbf{Performance:} \sys achieves accuracy on par with SOTA dynamic adapters while drastically reducing decoding latency by over \textbf{2.4$\times$}, bridging the gap between capability and efficiency.
-        \end{itemize}
-    \end{exampleblock}
-\end{column}
-\separatorcolumn
-\end{columns}
 
+\begin{column}{\colwidth}
 
-% Framework Block
-\begin{columns}[t]
-\separatorcolumn
-\begin{column}{\dimexpr2\colwidth+\sepwidth}
-\begin{block}{\sys: Framework Overview}
-\noindent
-\begin{minipage}[t]{0.70\linewidth}
-    \vspace{0pt}
-    \includegraphics[width=1.0\linewidth]{figures/overview.pdf}
-\end{minipage}%
-\hfill
-\begin{minipage}[t]{0.28\linewidth}
-    \vspace{0pt}
+  \begin{exampleblock}{\textcolor{black}{Motivation \& Contributions}}
+    \textbf{Problem \& Motivation:}
+    \begin{itemize}
+        \item Integrating dynamic sparse structures (MoE) with parameter-efficient adapters (e.g., LoRA) enhances LLMs but suffers from severe inference latency (decoding slows by $>$2.5$\times$).
+        \item The bottleneck lies in fragmented, sequential CUDA kernel launches required for conventional dynamic routing (layer-wise or block-wise), not computation itself.
+    \end{itemize}
+    \vspace{0.5ex}
+    \textbf{Our Key Contributions:}
+    \begin{itemize}
+        \item \textbf{Token-Level Pre-Gating:} We propose \textbf{\sys}, which employs a ``decide-once, apply-everywhere'' strategy. A single router at the first layer determines expert activation for all subsequent layers, eliminating repeated routing overhead.
+        \item \textbf{Fused Adapter Switching (SGMM):} We develop a custom CUDA kernel (SGMM) that merges parameters of all selected LoRA adapters into the backbone in a single efficient pass, replacing multiple kernel calls.
+        \item \textbf{Performance:} \sys achieves accuracy on par with SOTA dynamic adapters while drastically reducing decoding latency by over \textbf{2.4$\times$}, bridging the gap between capability and efficiency.
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{block}{\sys: Framework Overview}
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/overview.pdf}
+    \vspace{0.5em}
     \begin{itemize}
         \item \textbf{Token-wise Pre-gating:} Router $G^1$ at layer 1 predicts experts for all layers.
         \item \textbf{Decide-Once:} Eliminates $L-1$ routing computations.
@@ -120,19 +108,19 @@
         \item \textbf{Fused Switching:} Merges multiple LoRA adapters into the backbone weights in one kernel launch per layer.
         \item \textbf{Efficiency:} Transforms sequential operations into a single parallelized computation.
     \end{itemize}
-\end{minipage}
-\end{block}
+  \end{block}
+
+  \begin{alertblock}{Conclusion}
+    \sys introduces a novel token-level pre-gating architecture and SGMM kernel optimization. It effectively solves the inference latency bottleneck of dynamic adapters, offering SOTA accuracy with near-native inference speed.
+  \end{alertblock}
+
 \end{column}
-\separatorcolumn
-\end{columns}
 
-% Two columns: Evaluation + Analysis
-\begin{columns}[t]
 \separatorcolumn
 
-% Left Column
 \begin{column}{\colwidth}
-    \begin{alertblock}{Evaluation: Accuracy}
+
+  \begin{alertblock}{Evaluation: Accuracy}
     \textbf{General Capability Enhancement}
     \vspace{0.5em}
     
@@ -174,71 +162,61 @@
         \item \sys achieves competitive performance on general benchmarks.
         \item Outperforms baselines on domain-specific tasks (e.g., CommonsenseQA), showing strong reasoning adaptation.
     \end{itemize}
-    \end{alertblock}
+  \end{alertblock}
 
-\end{column}
-
-\separatorcolumn
-
-% Right Column
-\begin{column}{\colwidth}
-
-    \begin{block}{Runtime Performance \& Ablation}
-        \centering
-        
-        \textbf{Decoding Latency \& Memory (ShareGPT)}
-        \vspace{0.5em}
-        
-        \scriptsize
-        \renewcommand{\arraystretch}{1.1}
-        \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcc}
-        \toprule
-        \textbf{Method} & \textbf{Latency (ms/token)} & \textbf{Memory (GiB)} \\
-        \midrule
-        Llama2-7B (Base) & 2.4 & 12.9 \\
-        MOLA (Layer-wise) & 25.3 (+954\%) & 26.3 (+104\%) \\
-        PESC (Block-wise) & 8.5 (+254\%) & 13.1 (+2\%) \\
-        MoRAL (Layer-wise) & 8.6 (+258\%) & 13.3 (+3\%) \\
-        \rowcolor{gray!25} \textbf{\sys (Ours)} & \textbf{3.1 (+29\%)} & \textbf{13.8 (+7\%)} \\
-        \bottomrule
-        \end{tabular*}
-        
-        \vspace{1em}
-        \normalsize
-        \textbf{Impact of SGMM Kernel}
-        \vspace{0.5em}
-        
-        \scriptsize
-        \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lc}
-        \toprule
-        \textbf{Method Variant} & \textbf{Latency (ms/token)} \\
-        \midrule
-        Llama2-7B & 2.4 \\
-        MoRAL & 8.5 (+254\%) \\
-        MoRAL (Simple Merge) & 4.5 (+88\%) \\
-        \sys (Simple Merge) & 4.2 (+75\%) \\
-        \rowcolor{gray!25} \textbf{\sys (SGMM)} & \textbf{3.1 (+29\%)} \\
-        \bottomrule
-        \end{tabular*}
-        
-        \vspace{0.5em}
-        \normalsize
-        \begin{itemize}
-            \item \sys is \textbf{2.7$\times$ faster} than PESC and only 29\% slower than base model.
-            \item Ablation proves SGMM kernel is critical; without it, latency increases significantly.
-        \end{itemize}
-        
-        \vspace{1em}
-        \begin{center}
-        \includegraphics[width=0.8\linewidth]{figures/adapter_latency.pdf}
-        \end{center}
-    \end{block}
+  \begin{block}{Runtime Performance \& Ablation}
+    \centering
     
-    \begin{alertblock}{Conclusion}
-        \sys introduces a novel token-level pre-gating architecture and SGMM kernel optimization. It effectively solves the inference latency bottleneck of dynamic adapters, offering SOTA accuracy with near-native inference speed.
-    \end{alertblock}
+    \textbf{Decoding Latency \& Memory (ShareGPT)}
+    \vspace{0.5em}
+    
+    \scriptsize
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcc}
+    \toprule
+    \textbf{Method} & \textbf{Latency (ms/token)} & \textbf{Memory (GiB)} \\
+    \midrule
+    Llama2-7B (Base) & 2.4 & 12.9 \\
+    MOLA (Layer-wise) & 25.3 (+954\%) & 26.3 (+104\%) \\
+    PESC (Block-wise) & 8.5 (+254\%) & 13.1 (+2\%) \\
+    MoRAL (Layer-wise) & 8.6 (+258\%) & 13.3 (+3\%) \\
+    \rowcolor{gray!25} \textbf{\sys (Ours)} & \textbf{3.1 (+29\%)} & \textbf{13.8 (+7\%)} \\
+    \bottomrule
+    \end{tabular*}
+    
+    \vspace{1em}
+    \normalsize
+    \textbf{Impact of SGMM Kernel}
+    \vspace{0.5em}
+    
+    \scriptsize
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lc}
+    \toprule
+    \textbf{Method Variant} & \textbf{Latency (ms/token)} \\
+    \midrule
+    Llama2-7B & 2.4 \\
+    MoRAL & 8.5 (+254\%) \\
+    MoRAL (Simple Merge) & 4.5 (+88\%) \\
+    \sys (Simple Merge) & 4.2 (+75\%) \\
+    \rowcolor{gray!25} \textbf{\sys (SGMM)} & \textbf{3.1 (+29\%)} \\
+    \bottomrule
+    \end{tabular*}
+    
+    \vspace{0.5em}
+    \normalsize
+    \begin{itemize}
+        \item \sys is \textbf{2.7$\times$ faster} than PESC and only 29\% slower than base model.
+        \item Ablation proves SGMM kernel is critical; without it, latency increases significantly.
+    \end{itemize}
+    
+    \vspace{1em}
+    \begin{center}
+    \includegraphics[width=0.9\linewidth]{figures/adapter_latency.pdf}
+    \end{center}
+  \end{block}
 
 \end{column}
+
 \separatorcolumn
 \end{columns}
 
