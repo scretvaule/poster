@@ -33,6 +33,19 @@
 \setbeamerfont{block alerted body}{size=\Large}
 \setbeamerfont{block example body}{size=\Large}
 
+% Reduce vertical spacing between blocks
+\addtobeamertemplate{block begin}{}{\vspace{-0.5em}}
+\addtobeamertemplate{block end}{}{\vspace{-0.5em}}
+\addtobeamertemplate{block alerted begin}{}{\vspace{-0.5em}}
+\addtobeamertemplate{block alerted end}{}{\vspace{-0.5em}}
+\addtobeamertemplate{block example begin}{}{\vspace{-0.5em}}
+\addtobeamertemplate{block example end}{}{\vspace{-0.5em}}
+
+% Tighter itemize spacing
+\setlength{\itemsep}{0.3em}
+\setlength{\parsep}{0pt}
+\setlength{\parskip}{0pt}
+
 % ====================
 % Lengths
 % ====================
@@ -49,7 +62,7 @@
 % Title
 % ====================
 
-\title{\textcolor{black}{\fontsize{40}{50}\selectfont\textbf{\sys}: Accelerating Dynamic Adapter Inference via\\Token-Level Pre-Gating and Fused Kernel Optimization}}
+\title{\textcolor{black}{\fontsize{55}{66}\selectfont\textbf{\sys}: Accelerating Dynamic Adapter Inference via\\Token-Level Pre-Gating and Fused Kernel Optimization}}
 
 
 \author{\textcolor{black}{Qiyang Li${}^{1}$, Rui Kong${}^{1}$, Yuchen Li${}^{1}$, Hengyi Cai${}^{1}$, Shuaiqiang Wang${}^{1}$, Linghe Kong${}^{2}$, Guihai Chen${}^{2}$, Dawei Yin${}^{1}$}}
@@ -63,7 +76,7 @@
 \footercontent{
   {\color{black}
     {AAAI 2026} \hfill
-    % \href{mailto:yuchenli1230@gmail.com}{yuchenli1230@gmail.com}
+    \href{mailto:yuchenli1230@gmail.com}{yuchenli1230@gmail.com}
   }
 }
 \logoright{\includegraphics[height=8cm]{logos/baidu.png}}
@@ -84,7 +97,6 @@
 \separatorcolumn
 \begin{column}{\dimexpr2\colwidth+\sepwidth}
     \begin{exampleblock}{\textcolor{black}{Motivation \& Contributions}}
-        \vspace{0.5em} % Added spacing
         \begin{minipage}{0.60\linewidth}
             \textbf{\large Problem \& Motivation:}
             \begin{itemize}
@@ -179,7 +191,7 @@
         \bottomrule
         \end{tabular*}
         
-        \vspace{1em}
+        \vspace{0.5em}
         \normalsize
         \textbf{2. Domain-Specific Customization}
         
@@ -228,7 +240,7 @@
         \bottomrule
         \end{tabular*}
         
-        \vspace{1em}
+        \vspace{0.5em}
         \centering
         \includegraphics[width=0.85\linewidth]{figures/adapter_latency.pdf}
         \captionof{figure}{\sys (red) is \textbf{2.7$\times$ faster} than PESC.}
@@ -264,6 +276,11 @@
     \begin{alertblock}{Conclusion}
         \sys introduces a novel \textbf{token-level pre-gating architecture} and \textbf{SGMM kernel optimization}. It effectively solves the inference latency bottleneck of dynamic adapters, offering SOTA accuracy with near-native inference speed, bridging the gap between capability and efficiency.
     \end{alertblock}
+
+    \begin{block}{References}
+        \footnotesize
+        [1] Wu et al., PESC, 2024. [2] Yang et al., MoRAL, 2024. [3] Gao et al., MOLA, 2024. [4] Touvron et al., Llama 2, 2023.
+    \end{block}
 
 \end{column}
 \separatorcolumn
